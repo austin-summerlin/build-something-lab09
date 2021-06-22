@@ -46,6 +46,22 @@ describe('profile routes', () => {
     expect(res.body).toEqual([profile1, profile2]);
   });
 
+  it('updates a profile via id', async () => {
+    const quote = await fetchTagLine('Bender');
+    const profile = await Profile.createProfile({ name: 'User', favoriteCharacter: 'Bender' }, quote.body[0].quote);
+    profile.favoriteCharacter = 'Fry';
+    const res = await request(app)
+      .put(`/api/v1/profile/${profile.id}`)
+      .send({ favoriteCharacter: 'Fry' });
+
+    expect(res.body).toEqual({
+      id: '1',
+      name: 'User',
+      favoriteCharacter: profile.favoriteCharacter,
+      tagline: expect.not.stringContaining(profile.tagline)
+    });
+  });
+
 
 });
 
