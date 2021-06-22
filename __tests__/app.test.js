@@ -46,7 +46,7 @@ describe('profile routes', () => {
     expect(res.body).toEqual([profile1, profile2]);
   });
 
-  it('updates a profile via id', async () => {
+  it('updates a profile by id via UPDATE', async () => {
     const quote = await fetchTagLine('Bender');
     const profile = await Profile.createProfile({ name: 'User', favoriteCharacter: 'Bender' }, quote.body[0].quote);
     profile.favoriteCharacter = 'Fry';
@@ -60,6 +60,18 @@ describe('profile routes', () => {
       favoriteCharacter: profile.favoriteCharacter,
       tagline: expect.not.stringContaining(profile.tagline)
     });
+  });
+
+  it('deletes a profile by id via DELETE', async () => {
+    const quote = await fetchTagLine('Hermes');
+    const profile = await Profile.createProfile({
+      name: 'User',
+      favoriteCharacter: 'Hermes',
+    }, quote.body[0].quote);
+
+    const res = await request(app).delete(`/api/v1/profile/${profile.id}`)
+      .send(profile);
+    expect(res.body).toEqual(profile);
   });
 
 
