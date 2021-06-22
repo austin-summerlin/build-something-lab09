@@ -2,8 +2,10 @@ import pool from '../lib/utils/pool.js';
 import setup from '../data/setup.js';
 import request from 'supertest';
 import app from '../lib/app.js';
+// import { fetchTagLine } from '../lib/utils/futuramaQuote.js';
+// import Profile from '../lib/models/Profile.js';
 
-describe('demo routes', () => {
+describe('profile routes', () => {
   beforeEach(() => {
     return setup(pool);
   });
@@ -12,14 +14,14 @@ describe('demo routes', () => {
     const res = await request(app)
       .post('/api/v1/profile')
       .send({
-        name: 'Austin',
-        favoriteCharacter: 'Dr. Zoidberg'
+        name: 'User',
+        favoriteCharacter: 'Bender'
       });
 
     expect(res.body).toEqual({
       id: '1',
-      name: 'Austin',
-      favoriteCharacter: 'Dr. Zoidberg',
+      name: 'User',
+      favoriteCharacter: 'Bender',
       tagline: expect.any(String)
     });
   });
