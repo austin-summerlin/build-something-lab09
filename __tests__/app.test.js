@@ -31,7 +31,19 @@ describe('profile routes', () => {
     const profile = await Profile.createProfile({ name: 'User', favoriteCharacter: 'Fry' }, quote.body[0].quote);
 
     const res = await request(app).get(`/api/v1/profile/${profile.id}`);
-    expect(res.body).toEqual([profile]);
+    expect(res.body).toEqual(profile);
+  });
+
+  it('gets all profiles via GET', async () => {
+    const quote1 = await fetchTagLine('Leela');
+    const profile1 = await Profile.createProfile({ name: 'User', favoriteCharacter: 'Leela' }, quote1.body[0].quote);
+
+    const quote2 = await fetchTagLine('Amy');
+    const profile2 = await Profile.createProfile({ name: 'User2', favoriteCharacter: 'Amy' }, quote2.body[0].quote);
+
+    const res = await request(app).get('/api/v1/profile');
+
+    expect(res.body).toEqual([profile1, profile2]);
   });
 
 
