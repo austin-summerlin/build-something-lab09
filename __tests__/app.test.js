@@ -73,12 +73,5 @@ describe('profile routes', () => {
       .send(profile);
     expect(res.body).toEqual(profile);
   });
-
-
 });
-
-
-
-
-
 
