@@ -2,8 +2,8 @@ import pool from '../lib/utils/pool.js';
 import setup from '../data/setup.js';
 import request from 'supertest';
 import app from '../lib/app.js';
-// import { fetchTagLine } from '../lib/utils/futuramaQuote.js';
-// import Profile from '../lib/models/Profile.js';
+import { fetchTagLine } from '../lib/utils/futuramaQuote.js';
+import Profile from '../lib/models/Profile.js';
 
 describe('profile routes', () => {
   beforeEach(() => {
@@ -25,4 +25,20 @@ describe('profile routes', () => {
       tagline: expect.any(String)
     });
   });
+
+  it('get a profile by id via GET', async () => {
+    const quote = await fetchTagLine('Fry');
+    const profile = await Profile.createProfile({ name: 'User', favoriteCharacter: 'Fry' }, quote.body[0].quote);
+
+    const res = await request(app).get(`/api/v1/profile/${profile.id}`);
+    expect(res.body).toEqual([profile]);
+  });
+
+
 });
+
+
+
+
+
+
